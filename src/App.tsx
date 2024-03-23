@@ -223,13 +223,13 @@ function drawShot(shot: Shot) {
   if (shot.next) {
     //draw lines
     const leftMostline = app.evalCommandGetLabels(
-      `Segment((${shot.rightMost?.x}, ${shot.rightMost?.y}), (${shot.next.leftMost?.x}, ${shot.next.leftMost?.y}))`
+      `Segment(${rightMostPoint}, (${shot.next.leftMost?.x}, ${shot.next.leftMost?.y}))`
     )
     app.setColor(leftMostline, 255, 0, 0)
     app.setLabelVisible(leftMostline, false)
 
     const rightMostline = app.evalCommandGetLabels(
-      `Segment((${shot.leftMost?.x}, ${shot.leftMost?.y}), (${shot.next.rightMost?.x}, ${shot.next.rightMost?.y}))`
+      `Segment(${leftMostPoint}, (${shot.next.rightMost?.x}, ${shot.next.rightMost?.y}))`
     )
     app.setColor(rightMostline, 0, 0, 255)
     app.setCaption(rightMostline, shot.next.id)
@@ -238,6 +238,19 @@ function drawShot(shot: Shot) {
     drawShot(shot.next)
   }
   if (shot.branch) {
+    const leftMostline = app.evalCommandGetLabels(
+      `Segment(${rightMostPoint}, (${shot.branch.leftMost?.x}, ${shot.branch.leftMost?.y}))`
+    )
+    app.setColor(leftMostline, 255, 0, 0)
+    app.setLabelVisible(leftMostline, false)
+
+    const rightMostline = app.evalCommandGetLabels(
+      `Segment(${leftMostPoint}, (${shot.branch.rightMost?.x}, ${shot.branch.rightMost?.y}))`
+    )
+    app.setColor(rightMostline, 0, 0, 255)
+    app.setCaption(rightMostline, shot.branch.id)
+    app.setLabelStyle(rightMostline, 3)
+
     drawShot(shot.branch)
   }
 }
