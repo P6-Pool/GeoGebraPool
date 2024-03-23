@@ -41,6 +41,4 @@ const grpcServer = new grpc.Server()
 const service: JPoolAPIHandlers = { ShowShots: ShowShots }
 
 grpcServer.addService(api_proto.protobuf.JPoolAPI.service, service)
-grpcServer.bindAsync('0.0.0.0:50052', grpc.ServerCredentials.createInsecure(), () => {
-  grpcServer.start()
-})
+grpcServer.bindAsync('0.0.0.0:50052', grpc.ServerCredentials.createInsecure(), () => {})

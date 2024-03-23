@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx ts-node GrpcServer.ts",
+    "dev": "npx ts-node index.ts",
+    "proto": "npx proto-loader-gen-types --longs=String --enums=String --defaults --oneofs --grpcLib=@grpc/grpc-js --outDir=proto/ fastfiz-renderer-protobuffers/*.proto",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
