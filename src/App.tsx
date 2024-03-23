@@ -60,15 +60,8 @@ function handleNextShot(isNext: boolean) {
 }
 
 function addBtns() {
-  const btnBar = document.querySelector(
-    '#app0 > div.GeoGebraFrame.jsloaded.landscape.appletStyle.applet-unfocused > div:nth-child(1) > div.toolBPanel.overflow'
-  )
-
-  const btn = document
-    .querySelector(
-      '#app0 > div.GeoGebraFrame.applet-unfocused.jsloaded.landscape.appletStyle > div.ggbtoolbarpanel.smart-nb-draggable.toolbarPanelNorth.toolbarPanel > div.toolBPanel.overflow > div > div > ul > li:nth-child(2)'
-    )
-    ?.cloneNode(true) as HTMLElement
+  const btnBar = document.querySelectorAll('div.toolBPanel.overflow')[0]
+  const btn = btnBar.querySelector('div > div > ul > li:nth-child(2)')?.cloneNode(true) as HTMLElement
 
   const oldBtnBars = btnBar?.parentNode?.querySelectorAll('#newBtnBar')
   oldBtnBars?.forEach((oldBtnBar) => oldBtnBar.remove())
