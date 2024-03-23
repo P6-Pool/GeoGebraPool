@@ -131,9 +131,7 @@ const SIDE_POCKET_WIDTH = 0.12
 function resetApp() {
   app.newConstruction()
 
-  const canvas: HTMLCanvasElement | null = document.querySelector(
-    '#app0 > div.GeoGebraFrame.applet-unfocused.jsloaded.landscape.appletStyle > table > tbody > tr > td > div > div:nth-child(4) > div > div:nth-child(4) > div > div > canvas'
-  )
+  const canvas: HTMLCanvasElement | null = document.querySelectorAll('canvas')[1]
 
   const width = parseFloat(canvas!.style.width)
   const height = parseFloat(canvas!.style.height)
