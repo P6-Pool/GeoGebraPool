@@ -82,7 +82,19 @@ const SIDE_POCKET_WIDTH = 0.12
 
 function resetApp() {
   app.newConstruction()
-  app.setCoordSystem(-0.2, 2.3, -0.2, 2.3)
+
+  const canvas: HTMLCanvasElement | null = document.querySelector(
+    '#app0 > div.GeoGebraFrame.applet-unfocused.jsloaded.landscape.appletStyle > table > tbody > tr > td > div > div:nth-child(4) > div > div:nth-child(4) > div > div > canvas'
+  )
+
+  const width = parseFloat(canvas!.style.width)
+  const height = parseFloat(canvas!.style.height)
+  const ratio = width / height
+  const xStartPoint = -0.6
+  const yStartPoint = -0.2
+  const yRange = 2.5
+
+  app.setCoordSystem(xStartPoint, xStartPoint + yRange * ratio, yStartPoint, yStartPoint + yRange)
   app.setAxesVisible(false, false)
   app.setGridVisible(false)
 }
