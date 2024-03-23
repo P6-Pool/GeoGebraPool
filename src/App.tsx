@@ -24,7 +24,7 @@ newSocket.onmessage = handleReceiveShots
 const params: GGParams = {
   id: 'app',
   width: window.innerWidth,
-  height: window.innerHeight - 50,
+  height: window.innerHeight - 25,
   showMenuBar: true,
   showToolBar: false,
   showAlgebraInput: true,
