@@ -24,21 +24,20 @@ newSocket.onmessage = handleReceiveShots
 const params: GGParams = {
   id: 'app',
   width: window.innerWidth,
-  height: window.innerHeight - 25,
+  height: window.innerHeight,
   showMenuBar: true,
   showToolBar: false,
   showAlgebraInput: true,
   appletOnLoad: () => (app = window.app),
 }
 
+window.onresize = () => {
+  app.setWidth(window.innerWidth)
+  app.setHeight(window.innerHeight)
+}
+
 function App() {
-  return (
-    <>
-      <button onClick={() => handleNextShot(false)}>Prev</button>
-      <button onClick={() => handleNextShot(true)}>Next</button>
-      <Geogebra {...params} />
-    </>
-  )
+  return <Geogebra {...params} />
 }
 
 function handleReceiveShots(e: MessageEvent<any>) {
@@ -58,6 +57,55 @@ function handleNextShot(isNext: boolean) {
   resetApp()
   drawTable()
   drawShot(shots[showShotCounter])
+}
+
+function addBtns() {
+  const btnBar = document.querySelector(
+    '#app0 > div.GeoGebraFrame.jsloaded.landscape.appletStyle.applet-unfocused > div:nth-child(1) > div.toolBPanel.overflow'
+  )
+
+  const btn = document
+    .querySelector(
+      '#app0 > div.GeoGebraFrame.applet-unfocused.jsloaded.landscape.appletStyle > div.ggbtoolbarpanel.smart-nb-draggable.toolbarPanelNorth.toolbarPanel > div.toolBPanel.overflow > div > div > ul > li:nth-child(2)'
+    )
+    ?.cloneNode(true) as HTMLElement
+
+  const oldBtnBars = btnBar?.parentNode?.querySelectorAll('#newBtnBar')
+  oldBtnBars?.forEach((oldBtnBar) => oldBtnBar.remove())
+
+  const newBtnBar = btnBar?.cloneNode(true) as HTMLElement
+  newBtnBar.id = 'newBtnBar'
+
+  const ul = newBtnBar.getElementsByClassName('toolbar_mainItem')[0]
+  const prevBtn = btn?.cloneNode(true) as HTMLElement
+  const nextBtn = btn?.cloneNode(true) as HTMLElement
+
+  prevBtn?.addEventListener('click', () => handleNextShot(false))
+  nextBtn?.addEventListener('click', () => handleNextShot(true))
+
+  prevBtn.style.paddingLeft = '5px'
+  prevBtn.style.borderLeft = '1px solid #ccc'
+
+  const prevBtnDiv = prevBtn.firstChild as HTMLElement
+  const nextBtnDiv = nextBtn.firstChild as HTMLElement
+  prevBtnDiv.innerText = 'Prev'
+  nextBtnDiv.innerText = 'Next'
+  prevBtnDiv.style.display = 'flex'
+  nextBtnDiv.style.display = 'flex'
+  prevBtnDiv.style.alignItems = 'center'
+  nextBtnDiv.style.alignItems = 'center'
+
+  ul.replaceChildren()
+  ul.appendChild(prevBtn)
+  ul.appendChild(nextBtn)
+
+  const index = document.createElement('li')
+  index.textContent = `${showShotCounter + 1}/${shots.length}`
+  index.style.display = 'initial'
+
+  ul?.appendChild(index)
+
+  btnBar?.insertAdjacentElement('afterend', newBtnBar)
 }
 
 /////////////////////////////////////////////////
@@ -97,6 +145,7 @@ function resetApp() {
   app.setCoordSystem(xStartPoint, xStartPoint + yRange * ratio, yStartPoint, yStartPoint + yRange)
   app.setAxesVisible(false, false)
   app.setGridVisible(false)
+  addBtns()
 }
 
 function drawTable() {
