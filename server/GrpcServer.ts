@@ -19,7 +19,7 @@ const api_proto = grpc.loadPackageDefinition(packageDefinition) as unknown as Pr
 
 function ShowShots(call: grpc.ServerUnaryCall<ShowShotsRequest, Empty>, callback: grpc.sendUnaryData<Empty>) {
   wss.clients.forEach((client) => {
-    client.send(JSON.stringify(call.request.shots))
+    client.send(JSON.stringify(call.request))
   })
 
   callback(null, {
