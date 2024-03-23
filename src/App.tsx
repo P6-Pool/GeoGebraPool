@@ -163,14 +163,14 @@ function drawShot(shot: Shot) {
   app.setLabelVisible(ballCircle, false)
 
   //draw ghostballs
-  const leftMostPoint = app.evalCommandGetLabels(`(${shot.rightMost?.x}, ${shot.rightMost?.y})`)
+  const leftMostPoint = app.evalCommandGetLabels(`(${shot.leftMost?.x}, ${shot.leftMost?.y})`)
   const leftMostCircle = app.evalCommandGetLabels(`Circle(${leftMostPoint}, ${BALL_RADIUS})`)
   app.setColor(leftMostCircle, 255, 0, 0)
   app.setColor(leftMostPoint, 0, 0, 0)
   app.setLabelVisible(leftMostPoint, false)
   app.setLabelVisible(leftMostCircle, false)
 
-  const rightMostPoint = app.evalCommandGetLabels(`(${shot.leftMost?.x}, ${shot.leftMost?.y})`)
+  const rightMostPoint = app.evalCommandGetLabels(`(${shot.rightMost?.x}, ${shot.rightMost?.y})`)
   const rightMostCircle = app.evalCommandGetLabels(`Circle(${rightMostPoint}, ${BALL_RADIUS})`)
   app.setColor(rightMostCircle, 0, 0, 255)
   app.setColor(rightMostPoint, 0, 0, 0)
@@ -179,18 +179,18 @@ function drawShot(shot: Shot) {
 
   if (shot.next) {
     //draw lines
-    const rightMostline = app.evalCommandGetLabels(
+    const leftMostline = app.evalCommandGetLabels(
       `Segment((${shot.rightMost?.x}, ${shot.rightMost?.y}), (${shot.next.leftMost?.x}, ${shot.next.leftMost?.y}))`
+    )
+    app.setColor(leftMostline, 255, 0, 0)
+    app.setLabelVisible(leftMostline, false)
+
+    const rightMostline = app.evalCommandGetLabels(
+      `Segment((${shot.leftMost?.x}, ${shot.leftMost?.y}), (${shot.next.rightMost?.x}, ${shot.next.rightMost?.y}))`
     )
     app.setColor(rightMostline, 0, 0, 255)
     app.setCaption(rightMostline, shot.next.id)
     app.setLabelStyle(rightMostline, 3)
-
-    const leftMostline = app.evalCommandGetLabels(
-      `Segment((${shot.leftMost?.x}, ${shot.leftMost?.y}), (${shot.next.rightMost?.x}, ${shot.next.rightMost?.y}))`
-    )
-    app.setColor(leftMostline, 255, 0, 0)
-    app.setLabelVisible(leftMostline, false)
 
     drawShot(shot.next)
   }
