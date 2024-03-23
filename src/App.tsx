@@ -183,7 +183,8 @@ function drawShot(shot: Shot) {
       `Segment((${shot.rightMost?.x}, ${shot.rightMost?.y}), (${shot.next.leftMost?.x}, ${shot.next.leftMost?.y}))`
     )
     app.setColor(rightMostline, 0, 0, 255)
-    app.setLabelVisible(rightMostline, false)
+    app.setCaption(rightMostline, shot.next.id)
+    app.setLabelStyle(rightMostline, 3)
 
     const leftMostline = app.evalCommandGetLabels(
       `Segment((${shot.leftMost?.x}, ${shot.leftMost?.y}), (${shot.next.rightMost?.x}, ${shot.next.rightMost?.y}))`
