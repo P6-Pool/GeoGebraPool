@@ -21,6 +21,7 @@ newSocket.onopen = () => console.log('connected')
 newSocket.onclose = () => console.log('disconnected')
 newSocket.onmessage = handleReceiveShots
 
+//https://wiki.geogebra.org/en/Reference:GeoGebra_App_Parameters
 const params: GGParams = {
   id: 'app',
   width: window.innerWidth,
@@ -28,6 +29,7 @@ const params: GGParams = {
   showMenuBar: true,
   showToolBar: false,
   showAlgebraInput: true,
+  borderColor: '#fff',
   appletOnLoad: () => (app = window.app),
 }
 
@@ -102,6 +104,7 @@ function addBtns() {
 }
 
 /////////////////////////////////////////////////
+//https://wiki.geogebra.org/en/Reference:JavaScript
 
 const ballColors = [
   [0, 0, 0], // White -> black for visual presentation
