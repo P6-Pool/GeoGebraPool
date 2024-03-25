@@ -139,7 +139,6 @@ function resetApp() {
   app.setCoordSystem(xStartPoint, xStartPoint + yRange * ratio, yStartPoint, yStartPoint + yRange)
   app.setAxesVisible(false, false)
   app.setGridVisible(false)
-  app.evalCommand(`r=${BALL_RADIUS}`)
   addBtns()
 }
 
@@ -160,12 +159,18 @@ function drawTable() {
     const ballPoint = app.evalCommandGetLabels(`(${ball.pos?.x}, ${ball.pos?.y})`)
     const ballCircle = app.evalCommandGetLabels(`Circle(${ballPoint}, ${BALL_RADIUS})`)
     const ballNumber: number = ball.number ?? 0
-    const ballCol = ballColors[ballNumber]
+    const ballColorIdx = ballNumber > 8 ? ballNumber - 8 : ballNumber
+    const ballCol = ballColors[ballColorIdx]
     app.setColor(ballPoint, 0, 0, 0)
     app.setColor(ballCircle, ballCol[0], ballCol[1], ballCol[2])
     app.setFilling(ballCircle, 0.5)
     app.setLabelVisible(ballPoint, false)
     app.setLabelVisible(ballCircle, false)
+
+    if (ballNumber > 8) {
+      app.setPointStyle(ballPoint, 2)
+      // app.setLineStyle(ballCircle, 3)
+    }
   }
 
   //Draw pockets
@@ -195,17 +200,6 @@ function drawTable() {
 }
 
 function drawShot(shot: Shot) {
-  //draw ball
-  const ballPoint = app.evalCommandGetLabels(`(${shot.posB1?.x}, ${shot.posB1?.y})`)
-  const ballCircle = app.evalCommandGetLabels(`Circle(${ballPoint}, ${BALL_RADIUS})`)
-  const ballNumber: number = shot.b2 ?? 0
-  const ballCol = shot.type == ShotType.CUE_STRIKE ? ballColors[0] : ballColors[ballNumber] ?? [0, 0, 0]
-  app.setColor(ballPoint, 0, 0, 0)
-  app.setColor(ballCircle, ballCol[0], ballCol[1], ballCol[2])
-  app.setFilling(ballCircle, 0.5)
-  app.setLabelVisible(ballPoint, false)
-  app.setLabelVisible(ballCircle, false)
-
   //draw ghostballs
   const leftMostPoint = app.evalCommandGetLabels(`(${shot.leftMost?.x}, ${shot.leftMost?.y})`)
   const leftMostCircle = app.evalCommandGetLabels(`Circle(${leftMostPoint}, ${BALL_RADIUS})`)
@@ -224,13 +218,13 @@ function drawShot(shot: Shot) {
   if (shot.next) {
     //draw lines
     const leftMostline = app.evalCommandGetLabels(
-      `Segment(${rightMostPoint}, (${shot.next.leftMost?.x}, ${shot.next.leftMost?.y}))`
+      `Segment((${shot.rightMost?.x}, ${shot.rightMost?.y}), (${shot.next.leftMost?.x}, ${shot.next.leftMost?.y}))`
     )
     app.setColor(leftMostline, 255, 0, 0)
     app.setLabelVisible(leftMostline, false)
 
     const rightMostline = app.evalCommandGetLabels(
-      `Segment(${leftMostPoint}, (${shot.next.rightMost?.x}, ${shot.next.rightMost?.y}))`
+      `Segment((${shot.leftMost?.x}, ${shot.leftMost?.y}), (${shot.next.rightMost?.x}, ${shot.next.rightMost?.y}))`
     )
     app.setColor(rightMostline, 0, 0, 255)
     app.setCaption(rightMostline, shot.next.id)
@@ -239,19 +233,6 @@ function drawShot(shot: Shot) {
     drawShot(shot.next)
   }
   if (shot.branch) {
-    const leftMostline = app.evalCommandGetLabels(
-      `Segment(${rightMostPoint}, (${shot.branch.leftMost?.x}, ${shot.branch.leftMost?.y}))`
-    )
-    app.setColor(leftMostline, 255, 0, 0)
-    app.setLabelVisible(leftMostline, false)
-
-    const rightMostline = app.evalCommandGetLabels(
-      `Segment(${leftMostPoint}, (${shot.branch.rightMost?.x}, ${shot.branch.rightMost?.y}))`
-    )
-    app.setColor(rightMostline, 0, 0, 255)
-    app.setCaption(rightMostline, shot.branch.id)
-    app.setLabelStyle(rightMostline, 3)
-
     drawShot(shot.branch)
   }
 }
