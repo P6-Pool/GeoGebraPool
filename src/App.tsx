@@ -139,6 +139,7 @@ function resetApp() {
   app.setCoordSystem(xStartPoint, xStartPoint + yRange * ratio, yStartPoint, yStartPoint + yRange)
   app.setAxesVisible(false, false)
   app.setGridVisible(false)
+  app.evalCommand(`r=${BALL_RADIUS}`)
   addBtns()
 }
 
