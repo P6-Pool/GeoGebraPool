@@ -61,6 +61,15 @@ function handleNextShot(isNext: boolean) {
   drawShot(shots[showShotCounter])
 }
 
+function goToShot(number: number){
+  if(number <= shots.length && number >= 0){
+    showShotCounter = number;
+    resetApp()
+    drawTable()
+    drawShot(shots[showShotCounter])
+  }
+}
+
 function addBtns() {
   const btnBar = document.querySelectorAll('div.toolBPanel.overflow')[0]
   const btn = btnBar.querySelector('div > div > ul > li:nth-child(2)')?.cloneNode(true) as HTMLElement
@@ -74,25 +83,50 @@ function addBtns() {
   const ul = newBtnBar.getElementsByClassName('toolbar_mainItem')[0]
   const prevBtn = btn?.cloneNode(true) as HTMLElement
   const nextBtn = btn?.cloneNode(true) as HTMLElement
+  const submitBtn = btn?.cloneNode(true) as HTMLElement
 
   prevBtn?.addEventListener('click', () => handleNextShot(false))
   nextBtn?.addEventListener('click', () => handleNextShot(true))
+  submitBtn.addEventListener('click', () => {
+    const inputValue = parseInt(inputField.value)
+    if (!isNaN(inputValue)) {
+      goToShot(inputValue - 1)
+    }
+  })
 
   prevBtn.style.paddingLeft = '5px'
   prevBtn.style.borderLeft = '1px solid #ccc'
 
+  // Input field
+  const inputLi = document.createElement('li')
+  inputLi.classList.add('toolbar_item') 
+  const inputField = document.createElement('input')
+  inputLi.append(inputField)
+  inputField.type = 'number'
+  inputField.tabIndex = -1
+  inputField.style.width = '50px'
+  inputField.style.height = '40px'
+  inputField.style.padding = '3px'
+  inputField.style.border = '1px'
+
   const prevBtnDiv = prevBtn.firstChild as HTMLElement
   const nextBtnDiv = nextBtn.firstChild as HTMLElement
+  const submitBtnDiv = submitBtn.firstChild as HTMLElement
   prevBtnDiv.innerText = 'Prev'
   nextBtnDiv.innerText = 'Next'
+  submitBtnDiv.innerText = 'Go'
   prevBtnDiv.style.display = 'flex'
   nextBtnDiv.style.display = 'flex'
+  submitBtnDiv.style.display = 'flex'
   prevBtnDiv.style.alignItems = 'center'
   nextBtnDiv.style.alignItems = 'center'
-
+  submitBtnDiv.style.alignItems = 'center'
+  
   ul.replaceChildren()
   ul.appendChild(prevBtn)
   ul.appendChild(nextBtn)
+  ul.appendChild(inputLi)
+  ul.appendChild(submitBtn)
 
   const index = document.createElement('li')
   index.textContent = `${showShotCounter + 1}/${shots.length}`
