@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Geogebra, { Props as GGParams } from 'react-geogebra'
 import { Shot } from '../proto/protobuf/Shot'
-import { ShotType } from '../proto/protobuf/ShotType'
 import { ShowShotsRequest } from '../proto/protobuf/ShowShotsRequest'
 import { TableState } from '../proto/protobuf/TableState'
 
@@ -9,6 +8,20 @@ declare global {
   interface Window {
     app: any
   }
+}
+
+const modes: Record<string, number> = {
+  MOVE: 0,
+  VECTOR: 7,
+  INTERSECT: 5,
+  JOIN: 2,
+}
+
+const bindings: Record<string, number> = {
+  Escape: modes.MOVE,
+  v: modes.VECTOR,
+  i: modes.INTERSECT,
+  j: modes.JOIN,
 }
 
 let showShotCounter: number = 0
@@ -30,7 +43,10 @@ const params: GGParams = {
   showToolBar: false,
   showAlgebraInput: true,
   borderColor: '#fff',
-  appletOnLoad: () => (app = window.app),
+  appletOnLoad: () => {
+    app = window.app
+    setupKeyBindings()
+  },
 }
 
 window.onresize = () => {
@@ -61,13 +77,23 @@ function handleNextShot(isNext: boolean) {
   drawShot(shots[showShotCounter])
 }
 
-function goToShot(number: number){
-  if(number <= shots.length && number >= 0){
-    showShotCounter = number;
+function goToShot(number: number) {
+  if (number <= shots.length && number >= 0) {
+    showShotCounter = number
     resetApp()
     drawTable()
     drawShot(shots[showShotCounter])
   }
+}
+
+function setupKeyBindings() {
+  document.addEventListener('keyup', (e) => {
+    for (const key of Object.keys(bindings)) {
+      if (e.key === key) {
+        app.setMode(bindings[key])
+      }
+    }
+  })
 }
 
 function addBtns() {
@@ -99,7 +125,7 @@ function addBtns() {
 
   // Input field
   const inputLi = document.createElement('li')
-  inputLi.classList.add('toolbar_item') 
+  inputLi.classList.add('toolbar_item')
   const inputField = document.createElement('input')
   inputLi.append(inputField)
   inputField.type = 'number'
@@ -121,7 +147,7 @@ function addBtns() {
   prevBtnDiv.style.alignItems = 'center'
   nextBtnDiv.style.alignItems = 'center'
   submitBtnDiv.style.alignItems = 'center'
-  
+
   ul.replaceChildren()
   ul.appendChild(prevBtn)
   ul.appendChild(nextBtn)
