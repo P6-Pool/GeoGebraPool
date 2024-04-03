@@ -191,12 +191,15 @@ function resetApp() {
 
   const width = parseFloat(canvas!.style.width)
   const height = parseFloat(canvas!.style.height)
-  const ratio = width / height
-  const xStartPoint = -0.6
-  const yStartPoint = -0.2
-  const yRange = 2.5
 
-  app.setCoordSystem(xStartPoint, xStartPoint + yRange * ratio, yStartPoint, yStartPoint + yRange)
+  const ratio = width / height
+  const yRange = 2.5
+  const yStartPoint = -0.2
+  const xRange = yRange * ratio
+  const xStartPoint = -(xRange - TABLE_WIDTH) / 2
+
+  app.setCoordSystem(xStartPoint, xStartPoint + xRange, yStartPoint, yStartPoint + yRange)
+
   app.setAxesVisible(false, false)
   app.setGridVisible(false)
   addBtns()
