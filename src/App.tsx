@@ -15,13 +15,19 @@ const modes: Record<string, number> = {
   VECTOR: 7,
   INTERSECT: 5,
   JOIN: 2,
+  SEGMENT: 15,
+  CIRCLE_WIDTH_RADIUS: 34,
+  SELECT_OBJECTS: 77,
 }
 
 const bindings: Record<string, number> = {
   Escape: modes.MOVE,
   v: modes.VECTOR,
   i: modes.INTERSECT,
-  j: modes.JOIN,
+  l: modes.JOIN,
+  s: modes.SEGMENT,
+  c: modes.CIRCLE_WIDTH_RADIUS,
+  o: modes.SELECT_OBJECTS,
 }
 
 let showShotCounter: number = 0

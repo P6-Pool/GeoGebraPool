@@ -1,7 +1,7 @@
 import type * as grpc from '@grpc/grpc-js';
 import type { EnumTypeDefinition, MessageTypeDefinition } from '@grpc/proto-loader';
 
-import type { JPoolAPIClient as _protobuf_JPoolAPIClient, JPoolAPIDefinition as _protobuf_JPoolAPIDefinition } from './protobuf/JPoolAPI';
+import type { CueCanvasAPIClient as _protobuf_CueCanvasAPIClient, CueCanvasAPIDefinition as _protobuf_CueCanvasAPIDefinition } from './protobuf/CueCanvasAPI';
 
 type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> = {
   new(...args: ConstructorParameters<Constructor>): Subtype;
@@ -15,7 +15,7 @@ export interface ProtoGrpcType {
   }
   protobuf: {
     Ball: MessageTypeDefinition
-    JPoolAPI: SubtypeConstructor<typeof grpc.Client, _protobuf_JPoolAPIClient> & { service: _protobuf_JPoolAPIDefinition }
+    CueCanvasAPI: SubtypeConstructor<typeof grpc.Client, _protobuf_CueCanvasAPIClient> & { service: _protobuf_CueCanvasAPIDefinition }
     Point: MessageTypeDefinition
     Shot: MessageTypeDefinition
     ShotType: EnumTypeDefinition
