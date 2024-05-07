@@ -212,6 +212,7 @@ function resetApp() {
 }
 
 function drawTable() {
+  console.log(tableState)
   // Draw outline
   let line
   line = app.evalCommandGetLabels(`Segment((0, 0), (${TABLE_WIDTH}, 0))`)
@@ -300,9 +301,6 @@ function drawShot(shot: Shot) {
     app.setLabelStyle(rightMostline, 3)
 
     drawShot(shot.next)
-  }
-  if (shot.branch) {
-    drawShot(shot.branch)
   }
 }
 

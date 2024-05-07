@@ -2,7 +2,7 @@ import * as grpc from '@grpc/grpc-js'
 import * as protoLoader from '@grpc/proto-loader'
 import { Empty } from '../proto/google/protobuf/Empty'
 import { ProtoGrpcType } from '../proto/api'
-import { JPoolAPIHandlers } from '../proto/protobuf/JPoolAPI'
+import { CueCanvasAPIHandlers } from '../proto/protobuf/CueCanvasAPI'
 import { ShowShotsRequest } from '../proto/protobuf/ShowShotsRequest'
 import { WebSocketServer } from 'ws'
 
@@ -38,7 +38,7 @@ wss.on('connection', function connection(ws) {
 })
 
 const grpcServer = new grpc.Server()
-const service: JPoolAPIHandlers = { ShowShots: ShowShots }
+const service: CueCanvasAPIHandlers = { ShowShots: ShowShots }
 
 grpcServer.addService(api_proto.protobuf.CueCanvasAPI.service, service)
 grpcServer.bindAsync('0.0.0.0:50052', grpc.ServerCredentials.createInsecure(), () => {})
